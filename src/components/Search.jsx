@@ -5,6 +5,7 @@ export default function Search() {
     const [error, setError] = useState()
     const [input, setInput] = useState("")
     const [filteredRecords, setFilteredRecords] = useState([])
+    const [idx, setIdx] = useState(0)
     useEffect(() => {
         async function getData() {
             try {
@@ -32,6 +33,26 @@ export default function Search() {
                 setFilteredRecords([])
                 setInput("")
             }
+            if (e.keyCode == 38) {
+                if (idx == 0) {
+                    return;
+                }
+                if (idx == filteredRecords.length - 1) return
+                setIdx(prev => prev + 1)
+
+            }
+            if (e.keyCode == 40) {
+                if (idx == filteredRecords.length - 1) {
+                    return;
+                }
+                if (idx == 0) return
+                setIdx(prev => prev - 1)
+
+            }
+            if (e.keyCode == 13) {
+                setInput(filteredRecords[idx])
+            }
+
         }
 
         document.addEventListener("keydown", handleKeyEvent)
