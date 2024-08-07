@@ -26,6 +26,20 @@ export default function Search() {
         getData()
     }, [])
 
+    useEffect(() => {
+        function handleKeyEvent(e) {
+            if (e.keyCode == 8) {
+                setFilteredRecords([])
+                setInput("")
+            }
+        }
+
+        document.addEventListener("keydown", handleKeyEvent)
+
+        return () => document.removeEventListener("keydown", handleKeyEvent)
+    }, [])
+
+
     function handleSeacrch() {
         if (input.length == "") {
             return;
@@ -48,7 +62,11 @@ export default function Search() {
         <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Enter the name to search..." />
         <button onClick={handleSeacrch}>Search</button>
         {filteredRecords.length == 0 && <div>No records to display</div>}
-        {filteredRecords && filteredRecords.length > 0 && filteredRecords.map((item, index) => <p key={index}>{item.name}</p>)}
+        {filteredRecords && filteredRecords.length > 0 && filteredRecords.map((item, index) => <p
+            key={index}
+            onClick={() => setInput(item.name)}
+        >{item.name}
+        </p>)}
 
 
     </>)
